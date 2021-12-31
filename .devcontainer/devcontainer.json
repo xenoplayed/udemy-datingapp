@@ -1,0 +1,72 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.209.6/containers/javascript-node
+{
+	"name": ".NET5 and Node.js",
+	// "image": "mcr.microsoft.com/vscode/devcontainers/dotnet:5.0-bullseye",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { 
+			// Update 'VARIANT' to pick a .NET Core version: 3.1, 5.0, 6.0
+			// Append -bullseye or -focal to pin to an OS version.
+			// "VARIANT": "5.0",
+			// Options
+			"NODE_VERSION": "lts/*"
+		}
+	},
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"csharpextensions.privateMemberPrefix": "_",
+		"csharpextensions.useThisForCtorAssignments": false,
+		"omnisharp.useGlobalMono": "never",
+		"sqlite.sqlite3": "/usr/bin/sqlite3",
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"ms-dotnettools.csharp",
+		"kreativ-software.csharpextensions",
+		"jmrog.vscode-nuget-package-manager",
+		"johnpapa.Angular2",
+		"alexiv.vscode-angular2-files",
+		"Angular.ng-template",
+		"formulahendry.auto-rename-tag",
+		"PKief.material-icon-theme",
+		"esbenp.prettier-vscode",
+		"ms-vscode.vscode-typescript-tslint-plugin",
+		"infinity1207.angular2-switcher",
+		"RedVanWorkshop.explorer-exclude-vscode-extension",
+		"donjayamanne.git-extension-pack",
+		"patcx.vscode-nuget-gallery",
+		"alexcvzz.vscode-sqlite",
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		4200,
+		5000,
+		5001,
+	],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand":
+		"dotnet tool install --global dotnet-ef --version 5.0.12 && cd DatingApp && dotnet restore",
+
+	"mounts": [
+		"source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,consistency=cached",
+		"source=${env:HOME}${env:USERPROFILE}/.aspnet/https,target=/home/vscode/.aspnet/https,type=bind",
+	],
+
+	"remoteEnv": {
+		"ASPNETCORE_Kestrel__Certificates__Default__Password": "Banane123",
+		"ASPNETCORE_Kestrel__Certificates__Default__Path": "/home/vscode/.aspnet/https/aspnetapp.pfx",
+		"PATH": "${containerEnv:PATH}:/home/vscode/.dotnet/tools",
+	},
+
+	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+	"features": {
+		"git": "latest",
+	}
+}
